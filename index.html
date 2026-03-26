@@ -1,887 +1,823 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2487.3">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>王超逸 | 资深平台商家产运专家</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #f4f1ea;
+            --text-main: #2c2c2c;
+            --text-muted: #6e6e6e;
+            --accent-color: #b85c38;
+            --line-color: rgba(44, 44, 44, 0.15);
+            --font-serif-en: 'Playfair Display', serif;
+            --font-serif-cn: 'Noto Serif SC', serif;
+            --font-sans: 'Lato', sans-serif;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-sans);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* 全局噪点纹理 */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        .container {
+            max-width: 1100px; /* 稍微加宽容器以容纳左右布局 */
+            margin: 0 auto;
+            padding: 0 40px;
+            flex: 1;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- Header 区域：左右布局核心修改 --- */
+        header {
+            min-height: 85vh; /* 增加高度以显得更大气 */
+            display: flex;
+            align-items: center; /* 垂直居中 */
+            justify-content: space-between; /* 两端对齐，实现左右分布 */
+            padding-top: 60px;
+            padding-bottom: 40px;
+            position: relative;
+            gap: 60px; /* 文字和图片之间的间距 */
+        }
+
+        .header-content {
+            flex: 1; /* 文字区域占据剩余空间 */
+            max-width: 600px; /* 限制文字最大宽度，保证阅读舒适度 */
+            z-index: 2;
+        }
+
+        h1 {
+            font-family: var(--font-serif-cn);
+            font-size: 4rem; /* 稍微加大标题 */
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            font-family: var(--font-serif-en);
+            font-size: 1.6rem;
+            color: var(--accent-color);
+            font-style: italic;
+            margin-bottom: 35px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px 30px;
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin-bottom: 45px;
+            border-top: 1px solid var(--line-color);
+            padding-top: 25px;
+        }
+
+        .info-item span {
+            color: var(--text-main);
+            font-weight: 600;
+            margin-right: 10px;
+        }
+
+        .contact-btn {
+            display: inline-block;
+            padding: 14px 35px;
+            border: 1px solid var(--text-main);
+            color: var(--text-main);
+            text-decoration: none;
+            font-family: var(--font-serif-en);
+            font-style: italic;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .contact-btn:hover {
+            background-color: var(--text-main);
+            color: var(--bg-color);
+        }
+
+        /* --- 图片区域 --- */
+        .header-image-wrapper {
+            position: relative;
+            width: 320px; /* 适当增加图片尺寸以匹配大标题 */
+            height: 410px;
+            flex-shrink: 0; /* 防止图片被压缩 */
+        }
+
+        .polaroid {
+            width: 100%;
+            height: 100%;
+            background-color: #fff;
+            padding: 15px 15px 60px 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            transform: rotate(2deg);
+            transition: transform 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .img-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .profile-img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: opacity 0.6s ease-in-out;
+        }
+
+        .img-1 { opacity: 1; z-index: 2; }
+        .img-2 { opacity: 0; z-index: 1; }
+
+        .polaroid:hover .img-1 { opacity: 0; }
+        .polaroid:hover .img-2 { opacity: 1; }
+
+        .header-image-wrapper:hover .polaroid {
+            transform: rotate(0deg) scale(1.02);
+        }
+
+        /* --- 评价区域 --- */
+        .section-title {
+            font-family: var(--font-serif-en);
+            font-size: 2.2rem;
+            text-align: center;
+            margin: 100px 0 60px 0;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 2px;
+            background-color: var(--accent-color);
+            margin: 15px auto 0;
+        }
+
+        .eval-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .eval-card {
+            background: rgba(255,255,255,0.5);
+            padding: 30px;
+            border: 1px solid var(--line-color);
+            transition: transform 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .eval-card:hover {
+            transform: translateY(-5px);
+            background: #fff;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .eval-card h3 {
+            font-family: var(--font-serif-cn);
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--accent-color);
+            border-bottom: 1px dashed var(--line-color);
+            padding-bottom: 10px;
+        }
+
+        .eval-card ul {
+            list-style: none;
+            flex-grow: 1;
+        }
+
+        .eval-card li {
+            position: relative;
+            padding-left: 18px;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .eval-card li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--accent-color);
+        }
+
+        .lang-tags {
+            margin-top: auto;
+            padding-top: 15px;
+        }
+
+        .lang-tag {
+            display: inline-block;
+            margin-right: 5px;
+            padding: 4px 12px;
+            background-color: var(--text-main);
+            color: #fff;
+            font-size: 0.75rem;
+            border-radius: 20px;
+        }
+
+        /* --- 教育背景 --- */
+        .edu-section {
+            text-align: center;
+            margin-bottom: 100px;
+            padding: 40px 0;
+            border-top: 1px solid var(--line-color);
+            border-bottom: 1px solid var(--line-color);
+        }
+
+        .edu-list {
+            display: flex;
+            justify-content: center;
+            gap: 80px;
+            flex-wrap: wrap;
+        }
+
+        .edu-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .edu-school {
+            font-family: var(--font-serif-cn);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .edu-detail {
+            font-family: var(--font-sans);
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-top: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* --- 工作经历 --- */
+        .timeline {
+            position: relative;
+            padding-left: 40px;
+            margin-bottom: 100px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 10px;
+            bottom: 0;
+            width: 1px;
+            background-color: var(--line-color);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 100px;
+            padding-left: 40px;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: -45px;
+            top: 8px;
+            width: 11px;
+            height: 11px;
+            background-color: var(--bg-color);
+            border: 1px solid var(--text-main);
+            border-radius: 50%;
+            transition: background-color 0.3s;
+        }
+
+        .timeline-item:hover .timeline-dot {
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
+        }
+
+        .date {
+            font-family: var(--font-serif-en);
+            font-size: 1rem;
+            color: var(--accent-color);
+            margin-bottom: 8px;
+            font-style: italic;
+        }
+
+        .job-header {
+            margin-bottom: 20px;
+        }
+
+        .company {
+            font-family: var(--font-serif-cn);
+            font-size: 1.9rem;
+            font-weight: 700;
+            color: var(--text-main);
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .job-title {
+            font-family: var(--font-sans);
+            font-size: 1.05rem;
+            font-weight: 400;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: inline-block;
+            background: rgba(0,0,0,0.03);
+            padding: 3px 10px;
+            border-radius: 4px;
+        }
+
+        .perf-badge {
+            font-size: 0.8rem;
+            background: var(--accent-color);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 3px;
+            margin-left: 10px;
+            vertical-align: middle;
+            font-weight: bold;
+        }
+
+        .job-details {
+            margin-bottom: 25px;
+        }
+
+        .job-details li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 12px;
+            font-size: 1.05rem;
+            color: var(--text-main);
+            line-height: 1.7;
+        }
+
+        .job-details li::before {
+            content: '—';
+            position: absolute;
+            left: 0;
+            color: var(--line-color);
+        }
+
+        .highlight {
+            color: var(--accent-color);
+            font-weight: 700;
+            background: linear-gradient(to bottom, transparent 60%, rgba(184, 92, 56, 0.1) 60%);
+        }
+
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .project-tag {
+            font-family: var(--font-serif-en);
+            font-size: 0.95rem;
+            color: var(--text-main);
+            cursor: pointer;
+            padding: 8px 18px;
+            border: 1px solid var(--line-color);
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            background: transparent;
+        }
+
+        .project-tag:hover {
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+            background-color: rgba(184, 92, 56, 0.05);
+        }
+
+        /* --- 模态框 --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(244, 241, 234, 0.95);
+            backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+            z-index: 1000;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-card {
+            background: #fff;
+            width: 90%;
+            max-width: 800px;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 50px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            position: relative;
+            transform: translateY(50px);
+            transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .modal-overlay.active .modal-card {
+            transform: translateY(0);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            font-size: 2rem;
+            cursor: pointer;
+            color: var(--text-muted);
+            font-family: var(--font-serif-en);
+            transition: color 0.3s;
+        }
+
+        .close-btn:hover { color: var(--accent-color); }
+
+        .modal-title {
+            font-family: var(--font-serif-cn);
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--line-color);
+        }
+
+        .modal-body h4 {
+            font-family: var(--font-serif-cn);
+            font-size: 1.1rem;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            color: var(--text-main);
+        }
+
+        .modal-body p, .modal-body li {
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+        
+        .modal-body ul {
+            padding-left: 20px;
+        }
+
+        /* --- Footer --- */
+        footer {
+            margin-top: 100px;
+            padding: 60px 0 40px;
+            text-align: center;
+            border-top: 1px solid var(--line-color);
+            background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.02));
+        }
+
+        .footer-logo {
+            font-family: var(--font-serif-en);
+            font-size: 1.5rem;
+            font-style: italic;
+            color: var(--text-main);
+            margin-bottom: 15px;
+        }
+
+        .footer-text {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        .footer-line {
+            width: 50px;
+            height: 1px;
+            background-color: var(--accent-color);
+            margin: 0 auto;
+        }
+
+        /* --- 响应式调整 --- */
+        @media (max-width: 900px) {
+            .eval-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            /* 移动端恢复上下排列 */
+            header { 
+                flex-direction: column-reverse; 
+                text-align: center; 
+                padding-top: 40px; 
+                min-height: auto; 
+                padding-bottom: 60px; 
+                gap: 40px;
+            }
+            .header-content { 
+                padding-right: 0; 
+                margin-top: 0; 
+                max-width: 100%;
+            }
+            .info-grid { text-align: left; }
+            
+            .header-image-wrapper { 
+                width: 260px; 
+                height: 330px; 
+                margin: 0 auto; 
+            }
+            
+            h1 { font-size: 2.8rem; }
+            .timeline { padding-left: 20px; }
+            .timeline-item { padding-left: 20px; }
+            .timeline-dot { left: -26px; }
+            .modal-card { padding: 30px; }
+            .edu-list { gap: 40px; }
+        }
+    </style>
 </head>
 <body>
-<p class="p1">&lt;!DOCTYPE html&gt;</p>
-<p class="p1">&lt;html lang="zh-CN"&gt;</p>
-<p class="p1">&lt;head&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;title&gt;王超逸 | 资深平台商家产运专家&lt;/title&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;link rel="preconnect" href="https://fonts.googleapis.com"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;link rel="preconnect" href="https://fonts.gstatic.com" crossorigin&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&amp;family=Playfair+Display:ital,wght@0,400;0,600;1,400&amp;family=Lato:wght@300;400;700&amp;display=swap" rel="stylesheet"&gt;</p>
-<p class="p2"><span class="Apple-converted-space">    </span></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;style&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>:root {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>--bg-color: #f4f1ea;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>--text-main: #2c2c2c;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>--text-muted: #6e6e6e;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>--accent-color: #b85c38;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>--line-color: rgba(44, 44, 44, 0.15);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>--font-serif-en: 'Playfair Display', serif;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>--font-serif-cn: 'Noto Serif SC', serif;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>--font-sans: 'Lato', sans-serif;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>* { box-sizing: border-box; margin: 0; padding: 0; }</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>body {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-color: var(--bg-color);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--text-main);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-family: var(--font-sans);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>line-height: 1.6;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>overflow-x: hidden;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: relative;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>flex-direction: column;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>min-height: 100vh;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>/* 全局噪点纹理 */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>body::before {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>content: "";</p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: fixed;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>top: 0; left: 0; width: 100%; height: 100%;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");</p>
-<p class="p1"><span class="Apple-converted-space">            </span>pointer-events: none;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>z-index: 9999;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.container {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>max-width: 1000px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin: 0 auto;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 0 40px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>flex: 1; /* 让内容撑开高度 */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.reveal {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>opacity: 0;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transform: translateY(30px);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.reveal.active {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>opacity: 1;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transform: translateY(0);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>/* --- Header 区域 --- */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>header {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>min-height: 80vh; /* 稍微减小最小高度，配合缩小的图片 */</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>align-items: center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>justify-content: space-between;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding-top: 60px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding-bottom: 40px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: relative;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.header-content {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>flex: 1;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding-right: 60px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>z-index: 2;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>h1 {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-family: var(--font-serif-cn);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 3.5rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-weight: 700;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>line-height: 1.2;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 15px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>letter-spacing: -1px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.subtitle {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-family: var(--font-serif-en);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 1.5rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--accent-color);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-style: italic;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 30px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.info-grid {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: grid;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>grid-template-columns: repeat(2, 1fr);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>gap: 12px 20px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 0.95rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--text-muted);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 40px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-top: 1px solid var(--line-color);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding-top: 20px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.info-item span {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--text-main);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-weight: 600;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-right: 10px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.contact-btn {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: inline-block;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 12px 30px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border: 1px solid var(--text-main);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--text-main);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>text-decoration: none;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-family: var(--font-serif-en);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-style: italic;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transition: all 0.3s ease;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.contact-btn:hover {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-color: var(--text-main);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--bg-color);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>/* --- 图片区域优化 (缩小 + 动态切换) --- */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.header-image-wrapper {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: relative;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>/* 缩小尺寸：从 360x460 改为 280x360 */</p>
-<p class="p1"><span class="Apple-converted-space">            </span>width: 280px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>height: 360px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>flex-shrink: 0;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.polaroid {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>width: 100%;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>height: 100%;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-color: #fff;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 12px 12px 50px 12px; /* 相应减小内边距 */</p>
-<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 15px 35px rgba(0,0,0,0.15);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transform: rotate(2deg);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transition: transform 0.5s ease;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: relative;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>overflow: hidden; /* 确保图片不溢出 */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>/* 图片容器，用于绝对定位两张图 */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.img-container {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>width: 100%;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>height: 100%;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: relative;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.profile-img {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: absolute;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>top: 0;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>left: 0;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>width: 100%;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>height: 100%;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>object-fit: cover;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: block;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transition: opacity 0.6s ease-in-out; /* 平滑过渡效果 */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>/* 默认显示图1，隐藏图2 */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.img-1 {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>opacity: 1;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>z-index: 2;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.img-2 {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>opacity: 0;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>z-index: 1;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>/* 鼠标悬停在拍立得相框上时：显示图2，隐藏图1 */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.polaroid:hover .img-1 {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>opacity: 0;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.polaroid:hover .img-2 {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>opacity: 1;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.header-image-wrapper:hover .polaroid {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transform: rotate(0deg) scale(1.02);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>/* --- 评价区域 --- */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.section-title {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-family: var(--font-serif-en);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 2.2rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>text-align: center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin: 80px 0 50px 0;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: relative;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><span class="Apple-converted-space">        </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.section-title::after {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>content: '';</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: block;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>width: 40px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>height: 2px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-color: var(--accent-color);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin: 15px auto 0;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.eval-grid {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: grid;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>grid-template-columns: repeat(3, 1fr);<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>gap: 25px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 40px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.eval-card {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: rgba(255,255,255,0.5);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 25px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border: 1px solid var(--line-color);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transition: transform 0.3s ease;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>height: 100%;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>flex-direction: column;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.eval-card:hover {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transform: translateY(-5px);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: #fff;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 10px 30px rgba(0,0,0,0.05);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.eval-card h3 {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-family: var(--font-serif-cn);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 1.1rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 15px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--accent-color);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-bottom: 1px dashed var(--line-color);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding-bottom: 10px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.eval-card ul {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>list-style: none;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>flex-grow: 1;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.eval-card li {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: relative;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding-left: 18px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 8px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 0.9rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--text-muted);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>line-height: 1.5;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.eval-card li::before {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>content: '•';</p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: absolute;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>left: 0;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--accent-color);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.lang-tags {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-top: auto;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding-top: 15px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.lang-tag {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: inline-block;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-right: 5px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 4px 12px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-color: var(--text-main);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: #fff;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 0.75rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 20px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>/* --- 教育背景 --- */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.edu-section {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>text-align: center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 80px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 30px 0;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-top: 1px solid var(--line-color);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-bottom: 1px solid var(--line-color);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.edu-list {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>justify-content: center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>gap: 60px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>flex-wrap: wrap;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.edu-item {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>flex-direction: column;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>align-items: center;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.edu-school {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-family: var(--font-serif-cn);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 1.4rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-weight: 700;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--text-main);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.edu-detail {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-family: var(--font-sans);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 0.9rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--text-muted);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-top: 4px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>text-transform: uppercase;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>letter-spacing: 1px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>/* --- 工作经历 --- */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.timeline {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: relative;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding-left: 40px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 100px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.timeline::before {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>content: '';</p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: absolute;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>left: 0;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>top: 10px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>bottom: 0;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>width: 1px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-color: var(--line-color);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.timeline-item {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: relative;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 90px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding-left: 40px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.timeline-dot {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: absolute;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>left: -45px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>top: 8px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>width: 11px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>height: 11px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-color: var(--bg-color);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border: 1px solid var(--text-main);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 50%;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transition: background-color 0.3s;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.timeline-item:hover .timeline-dot {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-color: var(--accent-color);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-color: var(--accent-color);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.date {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-family: var(--font-serif-en);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 0.95rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--accent-color);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 8px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-style: italic;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.job-header {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 20px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.company {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-family: var(--font-serif-cn);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 1.8rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-weight: 700;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--text-main);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: block;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 5px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.job-title {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-family: var(--font-sans);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 1rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-weight: 400;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--text-muted);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>text-transform: uppercase;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>letter-spacing: 1px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: inline-block;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: rgba(0,0,0,0.03);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 2px 8px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 4px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.perf-badge {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 0.75rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: var(--accent-color);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: white;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 2px 6px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 3px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-left: 10px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>vertical-align: middle;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-weight: bold;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.job-details {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 25px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.job-details li {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: relative;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding-left: 20px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 12px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 1rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--text-main);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>line-height: 1.6;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.job-details li::before {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>content: '—';</p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: absolute;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>left: 0;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--line-color);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.highlight {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--accent-color);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-weight: 700;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: linear-gradient(to bottom, transparent 60%, rgba(184, 92, 56, 0.1) 60%);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.tags-container {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>flex-wrap: wrap;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>gap: 12px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-top: 20px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.project-tag {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-family: var(--font-serif-en);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 0.9rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--text-main);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>cursor: pointer;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 6px 16px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border: 1px solid var(--line-color);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 50px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transition: all 0.3s ease;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: transparent;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.project-tag:hover {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-color: var(--accent-color);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--accent-color);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-color: rgba(184, 92, 56, 0.05);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>/* --- 模态框 --- */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.modal-overlay {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: fixed;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>top: 0; left: 0; width: 100%; height: 100%;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: rgba(244, 241, 234, 0.95);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>backdrop-filter: blur(5px);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>justify-content: center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>align-items: center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>opacity: 0;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>visibility: hidden;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transition: all 0.4s ease;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>z-index: 1000;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.modal-overlay.active {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>opacity: 1;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>visibility: visible;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.modal-card {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: #fff;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>width: 90%;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>max-width: 800px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>max-height: 85vh;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>overflow-y: auto;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 50px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 20px 50px rgba(0,0,0,0.1);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: relative;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transform: translateY(50px);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border: 1px solid rgba(0,0,0,0.05);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.modal-overlay.active .modal-card {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transform: translateY(0);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.close-btn {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>position: absolute;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>top: 20px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>right: 25px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 2rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>cursor: pointer;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--text-muted);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-family: var(--font-serif-en);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>transition: color 0.3s;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.close-btn:hover { color: var(--accent-color); }</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.modal-title {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-family: var(--font-serif-cn);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 1.8rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 25px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding-bottom: 15px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-bottom: 1px solid var(--line-color);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.modal-body h4 {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-family: var(--font-serif-cn);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 1.1rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-top: 20px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 10px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--text-main);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.modal-body p, .modal-body li {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 0.95rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--text-muted);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 8px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><span class="Apple-converted-space">        </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.modal-body ul {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding-left: 20px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>/* --- Footer (新增过渡区域) --- */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>footer {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-top: 100px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>padding: 60px 0 40px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>text-align: center;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>border-top: 1px solid var(--line-color);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.02));</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.footer-logo {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-family: var(--font-serif-en);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 1.5rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-style: italic;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--text-main);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 15px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.footer-text {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>font-size: 0.85rem;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>color: var(--text-muted);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 20px;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>.footer-line {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>width: 50px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>height: 1px;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>background-color: var(--accent-color);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>margin: 0 auto;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>@media (max-width: 900px) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>.eval-grid {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>grid-template-columns: 1fr;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>@media (max-width: 768px) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>header { flex-direction: column-reverse; text-align: center; padding-top: 40px; min-height: auto; padding-bottom: 60px; }</p>
-<p class="p1"><span class="Apple-converted-space">            </span>.header-content { padding-right: 0; margin-top: 40px; }</p>
-<p class="p1"><span class="Apple-converted-space">            </span>.info-grid { text-align: left; }</p>
-<p class="p2"><span class="Apple-converted-space">            </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>/* 移动端图片也适当缩小 */</p>
-<p class="p1"><span class="Apple-converted-space">            </span>.header-image-wrapper { width: 240px; height: 310px; margin: 0 auto; }</p>
-<p class="p2"><span class="Apple-converted-space">            </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>h1 { font-size: 2.5rem; }</p>
-<p class="p1"><span class="Apple-converted-space">            </span>.timeline { padding-left: 20px; }</p>
-<p class="p1"><span class="Apple-converted-space">            </span>.timeline-item { padding-left: 20px; }</p>
-<p class="p1"><span class="Apple-converted-space">            </span>.timeline-dot { left: -26px; }</p>
-<p class="p1"><span class="Apple-converted-space">            </span>.modal-card { padding: 30px; }</p>
-<p class="p1"><span class="Apple-converted-space">            </span>.edu-list { gap: 30px; }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</p>
-<p class="p1">&lt;/head&gt;</p>
-<p class="p1">&lt;body&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;div class="container"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;header&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="header-content reveal"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;h1&gt;王超逸&lt;/h1&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="subtitle"&gt;Senior Platform Operation Expert&lt;/div&gt;</p>
-<p class="p2"><span class="Apple-converted-space">            </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="info-grid"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="info-item"&gt;&lt;span&gt;出生:&lt;/span&gt; 1992年8月&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="info-item"&gt;&lt;span&gt;现居:&lt;/span&gt; 杭州&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="info-item"&gt;&lt;span&gt;邮箱:&lt;/span&gt; 350918307@qq.com&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="info-item"&gt;&lt;span&gt;电话:&lt;/span&gt; 18612992045&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;a href="mailto:350918307@qq.com" class="contact-btn"&gt;联系我&lt;/a&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p2"><span class="Apple-converted-space">        </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="header-image-wrapper reveal"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="polaroid"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="img-container"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;!-- 图片1：默认显示 --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;img src="https://gw.alicdn.com/imgextra/i2/O1CN01Z4IDV81ayKxgzk2WJ_!!6000000003398-2-tps-1344-1608.png"<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">                         </span>alt="王超逸个人照片 1"<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">                         </span>class="profile-img img-1"</p>
-<p class="p1"><span class="Apple-converted-space">                         </span>crossorigin="anonymous"&gt;</p>
-<p class="p2"><span class="Apple-converted-space">                    </span></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;!-- 图片2：悬停显示 --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;img src="https://gw.alicdn.com/imgextra/i3/O1CN01wrLNUW1dDZMkt1Ure_!!6000000003702-2-tps-1676-1456.png"<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">                         </span>alt="王超逸个人照片 2"<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">                         </span>class="profile-img img-2"</p>
-<p class="p1"><span class="Apple-converted-space">                         </span>crossorigin="anonymous"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/header&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;section class="reveal"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;h2 class="section-title"&gt;Professional Profile&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="eval-grid"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="eval-card"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;h3&gt;全链路运营视角&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;ul&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;li&gt;&lt;strong&gt;11年互联网经验&lt;/strong&gt;，跨越用户运营、行业运营至商家商品产运。&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;li&gt;具备从商家供给策略到消费者全链路的宏观视野与微观执行力。&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/ul&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="eval-card"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;h3&gt;0-1 体系搭建&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;ul&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;li&gt;&lt;strong&gt;泡泡玛特：&lt;/strong&gt;全域消费者运营体系从0到1搭建。&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;li&gt;&lt;strong&gt;闲鱼：&lt;/strong&gt;卖家运营中心建设及原生商业化设计，实现千万级商家规模的可运营化与盈利。&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/ul&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="eval-card"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;h3&gt;特质与语言&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;ul&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;li&gt;极强的学习耐力，大学起坚持长跑至今未间断。&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;li&gt;CET-6，IELTS 6.5，具备优秀的跨文化沟通能力。&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/ul&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="lang-tags"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;span class="lang-tag"&gt;CET-6&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;span class="lang-tag"&gt;IELTS 6.5&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/section&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;section class="edu-section reveal"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="edu-list"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="edu-item"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="edu-school"&gt;中国科学院心理所&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="edu-detail"&gt;硕士 | 2012 - 2015&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="edu-item"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="edu-school"&gt;吉林大学&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="edu-detail"&gt;本科 | 2008 - 2012&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/section&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;section class="timeline-section"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;h2 class="section-title"&gt;Experience&lt;/h2&gt;</p>
-<p class="p2"><span class="Apple-converted-space">        </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="timeline"&gt;</p>
-<p class="p2"><span class="Apple-converted-space">            </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;!-- 阿里巴巴 --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="timeline-item reveal"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="timeline-dot"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="date"&gt;2021.02 — Present&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="job-header"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;span class="company"&gt;阿里巴巴 (闲鱼BU)&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;span class="job-title"&gt;P8 高级平台商家产运专家&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;span class="perf-badge"&gt;2年3.75 / 1年3.5+&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p2"><span class="Apple-converted-space">                </span></p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;ul class="job-details"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;li&gt;负责闲鱼B端生态基建、商业化变现及服务体验体系，助力大盘交易增长。&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;li&gt;&lt;strong&gt;商业化突破：&lt;/strong&gt;作为软件服务费项目负责人，跨团队推进项目上线，建立防逃逸机制，实现闲鱼&lt;span class="highlight"&gt;原生商业化收入从0到1&lt;/span&gt;的突破。&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;li&gt;&lt;strong&gt;B端成长体系：&lt;/strong&gt;搭建「鱼小铺」核心阵地，通过分层运营赋能千万级专业卖家，核心卖家财年订单实现&lt;span class="highlight"&gt;200%增长&lt;/span&gt;。&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;li&gt;&lt;strong&gt;供给侧改革：&lt;/strong&gt;搭建「值得买」场域，通过深库存竞价孵化爆品，浅库存社会化选品，显著提升优质供给规模。&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/ul&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="tags-container"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;button class="project-tag" onclick="openModal('ali_1')"&gt;供给侧改革细节&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;button class="project-tag" onclick="openModal('ali_2')"&gt;鱼小铺运营策略&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;button class="project-tag" onclick="openModal('ali_3')"&gt;商业化变现路径&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;button class="project-tag" onclick="openModal('ali_4')"&gt;服务保障体系&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;!-- 泡泡玛特 --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="timeline-item reveal"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="timeline-dot"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="date"&gt;2019.10 — 2021.02&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="job-header"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;span class="company"&gt;泡泡玛特 (POP MART)&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;span class="job-title"&gt;消费者运营中心经理&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p2"><span class="Apple-converted-space">                </span></p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;ul class="job-details"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;li&gt;负责会员全渠道整合及私域流量运营，构建AIPL会员运营模型。&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;li&gt;&lt;strong&gt;全渠道打通：&lt;/strong&gt;从0到1构建会员中心，整合门店、机器人、小程序等多平台数据，会员消费占比达&lt;span class="highlight"&gt;90%&lt;/span&gt;，复购率&lt;span class="highlight"&gt;60%&lt;/span&gt;。&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;li&gt;&lt;strong&gt;会员增长：&lt;/strong&gt;2020年会员同比增长&lt;span class="highlight"&gt;240%&lt;/span&gt;；推出付费优享卡，贡献&lt;span class="highlight"&gt;12%&lt;/span&gt;销售额。&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;li&gt;&lt;strong&gt;私域沉淀：&lt;/strong&gt;利用裂变营销扩展社群规模，将公域流量高效沉淀至会员中心小程序。&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/ul&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="tags-container"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;button class="project-tag" onclick="openModal('pop_1')"&gt;全渠道会员中心架构&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;button class="project-tag" onclick="openModal('pop_2')"&gt;会员成长与权益设计&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;button class="project-tag" onclick="openModal('pop_3')"&gt;私域流量运营SOP&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;!-- 衣二三 --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="timeline-item reveal"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="timeline-dot"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="date"&gt;2017.12 — 2019.08&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="job-header"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;span class="company"&gt;北京衣二三网络科技&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;span class="job-title"&gt;用户增长运营&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p2"><span class="Apple-converted-space">                </span></p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;ul class="job-details"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;li&gt;&lt;strong&gt;数据驱动投放策略：&lt;/strong&gt;基于用户LTV（生命周期价值）分析，动态调整各渠道投放预算与出价策略，实现低成本高质量获客。&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;li&gt;&lt;strong&gt;留存体系构建：&lt;/strong&gt;搭建“积分+会员”双驱动权益体系，通过差异化补贴策略，使新用户首次续费率提升&lt;span class="highlight"&gt;15%&lt;/span&gt;，次月留存率提高&lt;span class="highlight"&gt;15%&lt;/span&gt;。&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;li&gt;&lt;strong&gt;UGC生态闭环：&lt;/strong&gt;建立100+搭配师KOL社群，优化“晒图-算法推荐-商品页转化”链路，促进注册用户增长&lt;span class="highlight"&gt;25%&lt;/span&gt;。&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/ul&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="tags-container"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;button class="project-tag" onclick="openModal('yi_1')"&gt;投放ROI优化细节&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;button class="project-tag" onclick="openModal('yi_2')"&gt;裂变与老拉新策略&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;!-- 美丽说 --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="timeline-item reveal"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="timeline-dot"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="date"&gt;2015.06 — 2017.11&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="job-header"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;span class="company"&gt;美丽说 (HIGO)&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;span class="job-title"&gt;用户运营&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p2"><span class="Apple-converted-space">                </span></p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;ul class="job-details"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;li&gt;&lt;strong&gt;VIP分层服务体系：&lt;/strong&gt;从0到1搭建VIP私人时尚顾问团队及定向求购通道，通过极致服务提升高净值用户满意度与粘性。&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;li&gt;&lt;strong&gt;内容赋能交易：&lt;/strong&gt;创建APP内时尚栏目及微信公众号矩阵，以专业内容引导消费决策，单篇原创阅读量突破&lt;span class="highlight"&gt;5万+&lt;/span&gt;。&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;li&gt;&lt;strong&gt;精细化流失召回：&lt;/strong&gt;定义多维度流失用户标准，策划“CEO的信”等情感化召回活动，成功将特定人群召回率提升至&lt;span class="highlight"&gt;30%&lt;/span&gt;。&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/ul&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="tags-container"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;button class="project-tag" onclick="openModal('meili_1')"&gt;VIP权益与活动策划&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;button class="project-tag" onclick="openModal('meili_2')"&gt;内容营销与社群运营&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/section&gt;</p>
-<p class="p1">&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;!-- Footer 过渡区域 --&gt;</p>
-<p class="p1">&lt;footer class="reveal"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="footer-logo"&gt;Wang Chaoyi&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="footer-text"&gt;Thank you for visiting my portfolio.&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="footer-line"&gt;&lt;/div&gt;</p>
-<p class="p1">&lt;/footer&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;div class="modal-overlay" id="modalOverlay"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="modal-card"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;span class="close-btn" onclick="closeModal()"&gt;&amp;times;&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div id="modalContent"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1">&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;script&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const projects = {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>// 阿里巴巴</p>
-<p class="p1"><span class="Apple-converted-space">        </span>'ali_1': {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>title: '供给侧改革与爆品孵化',</p>
-<p class="p1"><span class="Apple-converted-space">            </span>desc: `&lt;h4&gt;1. 引入差异化外部供给&lt;/h4&gt;&lt;ul&gt;&lt;li&gt;成功引入高增速行业外部优质商家，设计行业解决方案，并为图书食品类目建立合规化链路。&lt;/li&gt;&lt;li&gt;通过发布驱动设计，以动态供需促发趋势缺货供给。&lt;/li&gt;&lt;/ul&gt;&lt;h4&gt;2. 搭建「值得买」场域&lt;/h4&gt;&lt;ul&gt;&lt;li&gt;&lt;strong&gt;深库存：&lt;/strong&gt;竞价孵化爆品。&lt;/li&gt;&lt;li&gt;&lt;strong&gt;浅库存：&lt;/strong&gt;社会化买家选品推荐。&lt;/li&gt;&lt;/ul&gt;`</p>
-<p class="p1"><span class="Apple-converted-space">        </span>},</p>
-<p class="p1"><span class="Apple-converted-space">        </span>'ali_2': {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>title: '鱼小铺与B端成长体系',</p>
-<p class="p1"><span class="Apple-converted-space">            </span>desc: `&lt;h4&gt;核心阵地：鱼小铺&lt;/h4&gt;&lt;p&gt;建立闲鱼B卖家核心运营阵地，驱动B卖家增长，拉动B卖买家MAC。&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;strong&gt;分层运营：&lt;/strong&gt;对闲鱼复杂生态B卖进行分层分类设计，通过流量、生态、服务基础建设赋能。&lt;/li&gt;&lt;li&gt;&lt;strong&gt;提效：&lt;/strong&gt;实现千万级专业卖家可运营、可驱动。&lt;/li&gt;&lt;/ul&gt;&lt;h4&gt;「超赞小铺」计划&lt;/h4&gt;&lt;p&gt;针对最核心卖家建立品牌心智，实现卖家间协作与良性竞争，实现财年订单 &lt;strong&gt;200%增长&lt;/strong&gt;。&lt;/p&gt;`</p>
-<p class="p1"><span class="Apple-converted-space">        </span>},</p>
-<p class="p1"><span class="Apple-converted-space">        </span>'ali_3': {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>title: '原生商业化价值探索',</p>
-<p class="p1"><span class="Apple-converted-space">            </span>desc: `&lt;h4&gt;1. 软件服务费项目 (负责人)&lt;/h4&gt;&lt;ul&gt;&lt;li&gt;跨多BU十余团队，高节奏推进项目平稳上线。&lt;/li&gt;&lt;li&gt;快速布防公关舆情，提前部署防逃逸机制，避免卖家流失。&lt;/li&gt;&lt;li&gt;实现了闲鱼自己的原生商业化收入（收入保密）。&lt;/li&gt;&lt;/ul&gt;&lt;h4&gt;2. 广告与增值工具&lt;/h4&gt;&lt;ul&gt;&lt;li&gt;在鱼小铺孵化了闲鱼原生广告能力。&lt;/li&gt;&lt;li&gt;提供数据、批量化工具、个性化店铺装修及AI帮卖能力。&lt;/li&gt;&lt;/ul&gt;`</p>
-<p class="p1"><span class="Apple-converted-space">        </span>},</p>
-<p class="p1"><span class="Apple-converted-space">        </span>'ali_4': {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>title: '服务保障体系搭建',</p>
-<p class="p1"><span class="Apple-converted-space">            </span>desc: `&lt;p&gt;为提升买家体验并扶优高服务能力专业卖家：&lt;/p&gt;&lt;ul&gt;&lt;li&gt;搭建闲鱼服务保障及保证金体系。&lt;/li&gt;&lt;li&gt;设计具有闲鱼特色的&lt;strong&gt;「描述不符包邮退」&lt;/strong&gt;服务模式。&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;strong&gt;成果：&lt;/strong&gt;服务商品转化率大幅提升，实现了卖家服务与买家体验的正向循环。&lt;/p&gt;`</p>
-<p class="p1"><span class="Apple-converted-space">        </span>},</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>// 泡泡玛特</p>
-<p class="p1"><span class="Apple-converted-space">        </span>'pop_1': {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>title: '全渠道会员中心 (0-1)',</p>
-<p class="p1"><span class="Apple-converted-space">            </span>desc: `&lt;ul&gt;&lt;li&gt;从0到1构建泡泡玛特会员中心，整合线上线下多平台（门店、机器人、小程序、天猫、京东）。&lt;/li&gt;&lt;li&gt;实现消费者数据全面打通，增强渠道渗透。&lt;/li&gt;&lt;li&gt;基于AIPL模型驱动会员新增及留存，会员消费占比达 &lt;strong&gt;90%&lt;/strong&gt;，复购率达到 &lt;strong&gt;60%&lt;/strong&gt;。&lt;/li&gt;&lt;/ul&gt;`</p>
-<p class="p1"><span class="Apple-converted-space">        </span>},</p>
-<p class="p1"><span class="Apple-converted-space">        </span>'pop_2': {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>title: '会员成长与优享卡',</p>
-<p class="p1"><span class="Apple-converted-space">            </span>desc: `&lt;h4&gt;1. 会员分层与权益&lt;/h4&gt;&lt;p&gt;全渠道布点吸引注册，2020年会员同比增长 &lt;strong&gt;240%&lt;/strong&gt;。&lt;/p&gt;&lt;h4&gt;2. 付费会员：泡泡玛特优享卡&lt;/h4&gt;&lt;p&gt;提供加速成长、新品提前享受等特权。付费会员贡献 &lt;strong&gt;12%&lt;/strong&gt; 销售额。&lt;/p&gt;&lt;h4&gt;3. 会员日营销&lt;/h4&gt;&lt;p&gt;打造全域会员活动地图，实现会员日消费 &lt;strong&gt;200%&lt;/strong&gt; 增幅。&lt;/p&gt;`</p>
-<p class="p1"><span class="Apple-converted-space">        </span>},</p>
-<p class="p1"><span class="Apple-converted-space">        </span>'pop_3': {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>title: '社群生态与私域流量',</p>
-<p class="p1"><span class="Apple-converted-space">            </span>desc: `&lt;p&gt;推动建立泡泡玛特社群生态系统，利用裂变营销策略从区域性向全国范围扩展。&lt;/p&gt;&lt;p&gt;有效提升了私域流量的质量与转化率，最终将这些流量沉淀至会员中心小程序中。&lt;/p&gt;`</p>
-<p class="p1"><span class="Apple-converted-space">        </span>},</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>// 衣二三</p>
-<p class="p1"><span class="Apple-converted-space">        </span>'yi_1': {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>title: '投放ROI优化与LTV分析',</p>
-<p class="p1"><span class="Apple-converted-space">            </span>desc: `&lt;h4&gt;1. 渠道质量评估体系&lt;/h4&gt;&lt;p&gt;建立基于用户首日、7日、30日留存及付费转化的多维评估模型，识别高LTV渠道。&lt;/p&gt;&lt;h4&gt;2. 动态出价策略&lt;/h4&gt;&lt;p&gt;针对不同渠道用户质量，实施差异化出价。对高留存渠道加大预算倾斜，对低质渠道进行创意优化或关停。&lt;/p&gt;&lt;h4&gt;3. 素材A/B测试&lt;/h4&gt;&lt;p&gt;持续优化投放素材，通过高频A/B测试提升CTR，降低CPA成本。&lt;/p&gt;`</p>
-<p class="p1"><span class="Apple-converted-space">        </span>},</p>
-<p class="p1"><span class="Apple-converted-space">        </span>'yi_2': {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>title: '裂变与老拉新策略',</p>
-<p class="p1"><span class="Apple-converted-space">            </span>desc: `&lt;h4&gt;1. 裂变产品设计&lt;/h4&gt;&lt;p&gt;设计“邀请好友得免租期/优惠券”机制，利用存量用户社交关系链获取低成本新用户。&lt;/p&gt;&lt;h4&gt;2. 老拉新活动运营&lt;/h4&gt;&lt;p&gt;结合节假日与新品上线，策划主题性老拉新活动，提升活跃用户的分享意愿。&lt;/p&gt;&lt;h4&gt;3. 数据监控与迭代&lt;/h4&gt;&lt;p&gt;实时监控裂变系数(K-factor)，优化分享链路转化率，实现每日新增用户数量稳步增长。&lt;/p&gt;`</p>
-<p class="p1"><span class="Apple-converted-space">        </span>},</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>// 美丽说</p>
-<p class="p1"><span class="Apple-converted-space">        </span>'meili_1': {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>title: 'VIP权益与活动策划',</p>
-<p class="p1"><span class="Apple-converted-space">            </span>desc: `&lt;h4&gt;1. VIP私人时尚顾问&lt;/h4&gt;&lt;p&gt;组建专业顾问团队，为高净值用户提供一对一穿搭建议，建立情感连接。&lt;/p&gt;&lt;h4&gt;2. VIP HIGO日记&lt;/h4&gt;&lt;p&gt;鼓励VIP用户分享高品质穿搭日记，给予流量曝光与实物奖励，形成标杆效应。会员日上线后分享量突破1万次。&lt;/p&gt;&lt;h4&gt;3. 流失召回：“CEO的信”&lt;/h4&gt;&lt;p&gt;以CEO名义发送个性化邮件/短信，表达关怀并提供专属回归礼包，通过情感共鸣提升召回率至30%。&lt;/p&gt;`</p>
-<p class="p1"><span class="Apple-converted-space">        </span>},</p>
-<p class="p1"><span class="Apple-converted-space">        </span>'meili_2': {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>title: '内容营销与社群运营',</p>
-<p class="p1"><span class="Apple-converted-space">            </span>desc: `&lt;h4&gt;1. 时尚栏目建设&lt;/h4&gt;&lt;p&gt;在APP内创建“时尚圈”专栏，访谈行业大牛，提升平台专业度与调性。&lt;/p&gt;&lt;h4&gt;2. 微信公众号矩阵&lt;/h4&gt;&lt;p&gt;策划原创时尚内容，结合热点话题，单篇阅读量达到5万+，有效引流至APP。&lt;/p&gt;&lt;h4&gt;3. VIP秒杀与测评&lt;/h4&gt;&lt;p&gt;定期举办VIP专属秒杀与美妆测评活动，提升VIP用户的活跃度与尊享感。&lt;/p&gt;`</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>};</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>const observerOptions = { threshold: 0.1 };</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const observer = new IntersectionObserver((entries) =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>entries.forEach(entry =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>if (entry.isIntersecting) {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>entry.target.classList.add('active');</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>});</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}, observerOptions);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>document.querySelectorAll('.reveal').forEach(el =&gt; observer.observe(el));</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>const modalOverlay = document.getElementById('modalOverlay');</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const modalContent = document.getElementById('modalContent');</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function openModal(id) {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const data = projects[id];</p>
-<p class="p1"><span class="Apple-converted-space">        </span>if(data) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>modalContent.innerHTML = `&lt;h3 class="modal-title"&gt;${data.title}&lt;/h3&gt;&lt;div class="modal-body"&gt;${data.desc}&lt;/div&gt;`;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>modalOverlay.classList.add('active');</p>
-<p class="p1"><span class="Apple-converted-space">            </span>document.body.style.overflow = 'hidden';</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function closeModal() {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>modalOverlay.classList.remove('active');</p>
-<p class="p1"><span class="Apple-converted-space">        </span>document.body.style.overflow = 'auto';</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>modalOverlay.addEventListener('click', (e) =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>if (e.target === modalOverlay) closeModal();</p>
-<p class="p1"><span class="Apple-converted-space">    </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>document.addEventListener('keydown', (e) =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>if (e.key === 'Escape') closeModal();</p>
-<p class="p1"><span class="Apple-converted-space">    </span>});</p>
-<p class="p1">&lt;/script&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;/body&gt;</p>
-<p class="p1">&lt;/html&gt;</p>
+
+<div class="container">
+    <header>
+        <!-- 左侧：文字内容 -->
+        <div class="header-content reveal">
+            <h1>王超逸</h1>
+            <div class="subtitle">Senior Platform Operation Expert</div>
+            
+            <div class="info-grid">
+                <div class="info-item"><span>出生:</span> 1992年8月</div>
+                <div class="info-item"><span>现居:</span> 杭州</div>
+                <div class="info-item"><span>邮箱:</span> 350918307@qq.com</div>
+                <div class="info-item"><span>电话:</span> 18612992045</div>
+            </div>
+
+            <a href="mailto:350918307@qq.com" class="contact-btn">联系我</a>
+        </div>
+        
+        <!-- 右侧：照片内容 -->
+        <div class="header-image-wrapper reveal">
+            <div class="polaroid">
+                <div class="img-container">
+                    <!-- 图片1：默认显示 -->
+                    <img src="https://gw.alicdn.com/imgextra/i2/O1CN01Z4IDV81ayKxgzk2WJ_!!6000000003398-2-tps-1344-1608.png" 
+                         alt="王超逸个人照片 1" 
+                         class="profile-img img-1"
+                         crossorigin="anonymous">
+                    
+                    <!-- 图片2：悬停显示 -->
+                    <img src="https://gw.alicdn.com/imgextra/i3/O1CN01wrLNUW1dDZMkt1Ure_!!6000000003702-2-tps-1676-1456.png" 
+                         alt="王超逸个人照片 2" 
+                         class="profile-img img-2"
+                         crossorigin="anonymous">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="reveal">
+        <h2 class="section-title">Professional Profile</h2>
+        <div class="eval-grid">
+            <div class="eval-card">
+                <h3>全链路运营视角</h3>
+                <ul>
+                    <li><strong>11年互联网经验</strong>，跨越用户运营、行业运营至商家商品产运。</li>
+                    <li>具备从商家供给策略到消费者全链路的宏观视野与微观执行力。</li>
+                </ul>
+            </div>
+            <div class="eval-card">
+                <h3>0-1 体系搭建</h3>
+                <ul>
+                    <li><strong>泡泡玛特：</strong>全域消费者运营体系从0到1搭建。</li>
+                    <li><strong>闲鱼：</strong>卖家运营中心建设及原生商业化设计，实现千万级商家规模的可运营化与盈利。</li>
+                </ul>
+            </div>
+            <div class="eval-card">
+                <h3>特质与语言</h3>
+                <ul>
+                    <li>极强的学习耐力，大学起坚持长跑至今未间断。</li>
+                    <li>CET-6，IELTS 6.5，具备优秀的跨文化沟通能力。</li>
+                </ul>
+                <div class="lang-tags">
+                    <span class="lang-tag">CET-6</span>
+                    <span class="lang-tag">IELTS 6.5</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="edu-section reveal">
+        <div class="edu-list">
+            <div class="edu-item">
+                <div class="edu-school">中国科学院心理所</div>
+                <div class="edu-detail">硕士 | 2012 - 2015</div>
+            </div>
+            <div class="edu-item">
+                <div class="edu-school">吉林大学</div>
+                <div class="edu-detail">本科 | 2008 - 2012</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="timeline-section">
+        <h2 class="section-title">Experience</h2>
+        
+        <div class="timeline">
+            
+            <div class="timeline-item reveal">
+                <div class="timeline-dot"></div>
+                <div class="date">2021.02 — Present</div>
+                <div class="job-header">
+                    <span class="company">阿里巴巴 (闲鱼BU)</span>
+                    <div>
+                        <span class="job-title">P8 高级平台商家产运专家</span>
+                        <span class="perf-badge">2年3.75 / 1年3.5+</span>
+                    </div>
+                </div>
+                
+                <ul class="job-details">
+                    <li>负责闲鱼B端生态基建、商业化变现及服务体验体系，助力大盘交易增长。</li>
+                    <li><strong>商业化突破：</strong>作为软件服务费项目负责人，跨团队推进项目上线，建立防逃逸机制，实现闲鱼<span class="highlight">原生商业化收入从0到1</span>的突破。</li>
+                    <li><strong>B端成长体系：</strong>搭建「鱼小铺」核心阵地，通过分层运营赋能千万级专业卖家，核心卖家财年订单实现<span class="highlight">200%增长</span>。</li>
+                    <li><strong>供给侧改革：</strong>搭建「值得买」场域，通过深库存竞价孵化爆品，浅库存社会化选品，显著提升优质供给规模。</li>
+                </ul>
+
+                <div class="tags-container">
+                    <button class="project-tag" onclick="openModal('ali_1')">供给侧改革细节</button>
+                    <button class="project-tag" onclick="openModal('ali_2')">鱼小铺运营策略</button>
+                    <button class="project-tag" onclick="openModal('ali_3')">商业化变现路径</button>
+                    <button class="project-tag" onclick="openModal('ali_4')">服务保障体系</button>
+                </div>
+            </div>
+
+            <div class="timeline-item reveal">
+                <div class="timeline-dot"></div>
+                <div class="date">2019.10 — 2021.02</div>
+                <div class="job-header">
+                    <span class="company">泡泡玛特 (POP MART)</span>
+                    <span class="job-title">消费者运营中心经理</span>
+                </div>
+                
+                <ul class="job-details">
+                    <li>负责会员全渠道整合及私域流量运营，构建AIPL会员运营模型。</li>
+                    <li><strong>全渠道打通：</strong>从0到1构建会员中心，整合门店、机器人、小程序等多平台数据，会员消费占比达<span class="highlight">90%</span>，复购率<span class="highlight">60%</span>。</li>
+                    <li><strong>会员增长：</strong>2020年会员同比增长<span class="highlight">240%</span>；推出付费优享卡，贡献<span class="highlight">12%</span>销售额。</li>
+                    <li><strong>私域沉淀：</strong>利用裂变营销扩展社群规模，将公域流量高效沉淀至会员中心小程序。</li>
+                </ul>
+
+                <div class="tags-container">
+                    <button class="project-tag" onclick="openModal('pop_1')">全渠道会员中心架构</button>
+                    <button class="project-tag" onclick="openModal('pop_2')">会员成长与权益设计</button>
+                    <button class="project-tag" onclick="openModal('pop_3')">私域流量运营SOP</button>
+                </div>
+            </div>
+
+            <div class="timeline-item reveal">
+                <div class="timeline-dot"></div>
+                <div class="date">2017.12 — 2019.08</div>
+                <div class="job-header">
+                    <span class="company">北京衣二三网络科技</span>
+                    <span class="job-title">用户增长运营</span>
+                </div>
+                
+                <ul class="job-details">
+                    <li><strong>数据驱动投放策略：</strong>基于用户LTV（生命周期价值）分析，动态调整各渠道投放预算与出价策略，实现低成本高质量获客。</li>
+                    <li><strong>留存体系构建：</strong>搭建“积分+会员”双驱动权益体系，通过差异化补贴策略，使新用户首次续费率提升<span class="highlight">15%</span>，次月留存率提高<span class="highlight">15%</span>。</li>
+                    <li><strong>UGC生态闭环：</strong>建立100+搭配师KOL社群，优化“晒图-算法推荐-商品页转化”链路，促进注册用户增长<span class="highlight">25%</span>。</li>
+                </ul>
+
+                <div class="tags-container">
+                    <button class="project-tag" onclick="openModal('yi_1')">投放ROI优化细节</button>
+                    <button class="project-tag" onclick="openModal('yi_2')">裂变与老拉新策略</button>
+                </div>
+            </div>
+
+            <div class="timeline-item reveal">
+                <div class="timeline-dot"></div>
+                <div class="date">2015.06 — 2017.11</div>
+                <div class="job-header">
+                    <span class="company">美丽说 (HIGO)</span>
+                    <span class="job-title">用户运营</span>
+                </div>
+                
+                <ul class="job-details">
+                    <li><strong>VIP分层服务体系：</strong>从0到1搭建VIP私人时尚顾问团队及定向求购通道，通过极致服务提升高净值用户满意度与粘性。</li>
+                    <li><strong>内容赋能交易：</strong>创建APP内时尚栏目及微信公众号矩阵，以专业内容引导消费决策，单篇原创阅读量突破<span class="highlight">5万+</span>。</li>
+                    <li><strong>精细化流失召回：</strong>定义多维度流失用户标准，策划“CEO的信”等情感化召回活动，成功将特定人群召回率提升至<span class="highlight">30%</span>。</li>
+                </ul>
+
+                <div class="tags-container">
+                    <button class="project-tag" onclick="openModal('meili_1')">VIP权益与活动策划</button>
+                    <button class="project-tag" onclick="openModal('meili_2')">内容营销与社群运营</button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+</div>
+
+<footer class="reveal">
+    <div class="footer-logo">Wang Chaoyi</div>
+    <div class="footer-text">Thank you for visiting my portfolio.</div>
+    <div class="footer-line"></div>
+</footer>
+
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal-card">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <div id="modalContent"></div>
+    </div>
+</div>
+
+<script>
+    const projects = {
+        'ali_1': { title: '供给侧改革与爆品孵化', desc: `<h4>1. 引入差异化外部供给</h4><ul><li>成功引入高增速行业外部优质商家，设计行业解决方案，并为图书食品类目建立合规化链路。</li><li>通过发布驱动设计，以动态供需促发趋势缺货供给。</li></ul><h4>2. 搭建「值得买」场域</h4><ul><li><strong>深库存：</strong>竞价孵化爆品。</li><li><strong>浅库存：</strong>社会化买家选品推荐。</li></ul>` },
+        'ali_2': { title: '鱼小铺与B端成长体系', desc: `<h4>核心阵地：鱼小铺</h4><p>建立闲鱼B卖家核心运营阵地，驱动B卖家增长，拉动B卖买家MAC。</p><ul><li><strong>分层运营：</strong>对闲鱼复杂生态B卖进行分层分类设计，通过流量、生态、服务基础建设赋能。</li><li><strong>提效：</strong>实现千万级专业卖家可运营、可驱动。</li></ul><h4>「超赞小铺」计划</h4><p>针对最核心卖家建立品牌心智，实现卖家间协作与良性竞争，实现财年订单 <strong>200%增长</strong>。</p>` },
+        'ali_3': { title: '原生商业化价值探索', desc: `<h4>1. 软件服务费项目 (负责人)</h4><ul><li>跨多BU十余团队，高节奏推进项目平稳上线。</li><li>快速布防公关舆情，提前部署防逃逸机制，避免卖家流失。</li><li>实现了闲鱼自己的原生商业化收入（收入保密）。</li></ul><h4>2. 广告与增值工具</h4><ul><li>在鱼小铺孵化了闲鱼原生广告能力。</li><li>提供数据、批量化工具、个性化店铺装修及AI帮卖能力。</li></ul>` },
+        'ali_4': { title: '服务保障体系搭建', desc: `<p>为提升买家体验并扶优高服务能力专业卖家：</p><ul><li>搭建闲鱼服务保障及保证金体系。</li><li>设计具有闲鱼特色的<strong>「描述不符包邮退」</strong>服务模式。</li></ul><p><strong>成果：</strong>服务商品转化率大幅提升，实现了卖家服务与买家体验的正向循环。</p>` },
+        'pop_1': { title: '全渠道会员中心 (0-1)', desc: `<ul><li>从0到1构建泡泡玛特会员中心，整合线上线下多平台（门店、机器人、小程序、天猫、京东）。</li><li>实现消费者数据全面打通，增强渠道渗透。</li><li>基于AIPL模型驱动会员新增及留存，会员消费占比达 <strong>90%</strong>，复购率达到 <strong>60%</strong>。</li></ul>` },
+        'pop_2': { title: '会员成长与优享卡', desc: `<h4>1. 会员分层与权益</h4><p>全渠道布点吸引注册，2020年会员同比增长 <strong>240%</strong>。</p><h4>2. 付费会员：泡泡玛特优享卡</h4><p>提供加速成长、新品提前享受等特权。付费会员贡献 <strong>12%</strong> 销售额。</p><h4>3. 会员日营销</h4><p>打造全域会员活动地图，实现会员日消费 <strong>200%</strong> 增幅。</p>` },
+        'pop_3': { title: '社群生态与私域流量', desc: `<p>推动建立泡泡玛特社群生态系统，利用裂变营销策略从区域性向全国范围扩展。</p><p>有效提升了私域流量的质量与转化率，最终将这些流量沉淀至会员中心小程序中。</p>` },
+        'yi_1': { title: '投放ROI优化与LTV分析', desc: `<h4>1. 渠道质量评估体系</h4><p>建立基于用户首日、7日、30日留存及付费转化的多维评估模型，识别高LTV渠道。</p><h4>2. 动态出价策略</h4><p>针对不同渠道用户质量，实施差异化出价。对高留存渠道加大预算倾斜，对低质渠道进行创意优化或关停。</p><h4>3. 素材A/B测试</h4><p>持续优化投放素材，通过高频A/B测试提升CTR，降低CPA成本。</p>` },
+        'yi_2': { title: '裂变与老拉新策略', desc: `<h4>1. 裂变产品设计</h4><p>设计“邀请好友得免租期/优惠券”机制，利用存量用户社交关系链获取低成本新用户。</p><h4>2. 老拉新活动运营</h4><p>结合节假日与新品上线，策划主题性老拉新活动，提升活跃用户的分享意愿。</p><h4>3. 数据监控与迭代</h4><p>实时监控裂变系数(K-factor)，优化分享链路转化率，实现每日新增用户数量稳步增长。</p>` },
+        'meili_1': { title: 'VIP权益与活动策划', desc: `<h4>1. VIP私人时尚顾问</h4><p>组建专业顾问团队，为高净值用户提供一对一穿搭建议，建立情感连接。</p><h4>2. VIP HIGO日记</h4><p>鼓励VIP用户分享高品质穿搭日记，给予流量曝光与实物奖励，形成标杆效应。会员日上线后分享量突破1万次。</p><h4>3. 流失召回：“CEO的信”</h4><p>以CEO名义发送个性化邮件/短信，表达关怀并提供专属回归礼包，通过情感共鸣提升召回率至30%。</p>` },
+        'meili_2': { title: '内容营销与社群运营', desc: `<h4>1. 时尚栏目建设</h4><p>在APP内创建“时尚圈”专栏，访谈行业大牛，提升平台专业度与调性。</p><h4>2. 微信公众号矩阵</h4><p>策划原创时尚内容，结合热点话题，单篇阅读量达到5万+，有效引流至APP。</p><h4>3. VIP秒杀与测评</h4><p>定期举办VIP专属秒杀与美妆测评活动，提升VIP用户的活跃度与尊享感。</p>` }
+    };
+
+    const observerOptions = { threshold: 0.1 };
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) { entry.target.classList.add('active'); }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    const modalOverlay = document.getElementById('modalOverlay');
+    const modalContent = document.getElementById('modalContent');
+
+    function openModal(id) {
+        const data = projects[id];
+        if(data) {
+            modalContent.innerHTML = `<h3 class="modal-title">${data.title}</h3><div class="modal-body">${data.desc}</div>`;
+            modalOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
+    function closeModal() {
+        modalOverlay.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    }
+
+    modalOverlay.addEventListener('click', (e) => { if (e.target === modalOverlay) closeModal(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+</script>
+
 </body>
 </html>
